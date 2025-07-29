@@ -41,7 +41,7 @@ export const useOpenRouter = () => {
 
   const sendMessage = useCallback(async (
     messages: ChatMessage[],
-    model: string = 'meta-llama/llama-3.1-8b-instruct:free'
+    model: string = 'moonshotai/kimi-k2:free'
   ): Promise<string> => {
     setIsLoading(true)
     setError(null)
@@ -91,7 +91,7 @@ export const useOpenRouter = () => {
   const generateSpaceAnalysis = useCallback(async (
     prompt: string,
     context: string = '',
-    model: string = 'meta-llama/llama-3.1-8b-instruct:free'
+    model: string = 'moonshotai/kimi-k2:free'
   ) => {
     const systemPrompt = `You are ASTRA-X, an advanced AI system designed for trans-planetary exploration and space mission analysis. You have deep knowledge of:
     - Planetary geology and atmospheric science
@@ -122,31 +122,17 @@ export const useOpenRouter = () => {
 
 export const AVAILABLE_MODELS = [
   {
+    id: 'moonshotai/kimi-k2:free',
+    name: 'Kimi K2',
+    description: 'Advanced AI for space exploration analysis',
+    context_length: 32000,
+    pricing: { prompt: '0', completion: '0' }
+  },
+  {
     id: 'meta-llama/llama-3.1-8b-instruct:free',
     name: 'LLaMA 3.1 8B',
     description: 'Fast and efficient for general tasks',
     context_length: 128000,
     pricing: { prompt: '0', completion: '0' }
-  },
-  {
-    id: 'mistralai/mistral-7b-instruct:free',
-    name: 'Mistral 7B',
-    description: 'Balanced performance and speed',
-    context_length: 32768,
-    pricing: { prompt: '0', completion: '0' }
-  },
-  {
-    id: 'microsoft/wizardlm-2-8x22b',
-    name: 'WizardLM 2 8x22B',
-    description: 'Advanced reasoning capabilities',
-    context_length: 65536,
-    pricing: { prompt: '1.00', completion: '1.00' }
-  },
-  {
-    id: 'anthropic/claude-3-haiku',
-    name: 'Claude 3 Haiku',
-    description: 'Fast and accurate responses',
-    context_length: 200000,
-    pricing: { prompt: '0.25', completion: '1.25' }
   }
 ] as const

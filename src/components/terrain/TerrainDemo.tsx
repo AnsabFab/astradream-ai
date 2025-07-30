@@ -26,7 +26,7 @@ const TerrainMesh = ({ position, color, scale = 1 }: TerrainMeshProps) => {
   })
 
   return (
-    <mesh ref={meshRef} position={position} scale={scale}>
+    <mesh ref={meshRef} position={position} scale={[scale, scale, scale]}>
       <sphereGeometry args={[0.5, 16, 16]} />
       <meshStandardMaterial color={color} roughness={0.7} metalness={0.3} />
     </mesh>

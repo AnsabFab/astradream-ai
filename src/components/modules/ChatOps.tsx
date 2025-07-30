@@ -139,20 +139,25 @@ export function ChatOps() {
               </div>
               
               <div className={`flex-1 ${message.role === 'user' ? 'text-right' : ''}`}>
-                <div className={`inline-block p-3 rounded-lg max-w-[80%] ${
+                <div className={`inline-block p-4 rounded-xl max-w-[85%] shadow-sm ${
                   message.role === 'user'
-                    ? 'bg-secondary/20 text-secondary-foreground'
-                    : 'bg-background-secondary/50'
+                    ? 'bg-primary/10 text-foreground border border-primary/20'
+                    : 'bg-background border border-border/50'
                 }`}>
-                  <p className="text-sm">{message.content}</p>
+                  <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                    {message.content}
+                  </div>
                 </div>
-                <div className="flex items-center mt-1 text-xs text-muted-foreground">
-                  <span>{message.timestamp.toLocaleTimeString()}</span>
+                <div className={`flex items-center mt-2 text-xs text-muted-foreground gap-2 ${
+                  message.role === 'user' ? 'justify-end' : 'justify-start'
+                }`}>
+                  <span className="bg-background/50 px-2 py-1 rounded border border-border/30">
+                    {message.timestamp.toLocaleTimeString()}
+                  </span>
                   {message.model && (
-                    <>
-                      <span className="mx-2">•</span>
-                      <span>{message.model}</span>
-                    </>
+                    <Badge variant="outline" className="text-xs py-0 px-2">
+                      {message.model}
+                    </Badge>
                   )}
                 </div>
               </div>
@@ -169,12 +174,14 @@ export function ChatOps() {
             <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
               <Bot className="w-4 h-4" />
             </div>
-            <div className="bg-background-secondary/50 rounded-lg p-3">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
-                <span className="text-xs text-muted-foreground ml-2">ASTRA-X thinking...</span>
+            <div className="bg-background border border-border/50 rounded-xl p-4 shadow-sm">
+              <div className="flex items-center space-x-3">
+                <div className="flex space-x-1">
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
+                </div>
+                <span className="text-sm text-muted-foreground">ASTRA-X is analyzing your request...</span>
               </div>
             </div>
           </motion.div>

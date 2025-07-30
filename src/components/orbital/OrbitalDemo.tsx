@@ -1,87 +1,56 @@
-import { useRef, useEffect, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Text, Sphere, Ring } from '@react-three/drei'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import * as THREE from 'three'
 import { useOpenRouter } from '@/hooks/useOpenRouter'
 import { GlassCard } from '@/components/ui/glass-card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Rocket, Orbit, Fuel, Gauge } from 'lucide-react'
 
-interface OrbitingObjectProps {
-  radius: number
-  speed: number
-  color: string
-  size?: number
-}
-
-const OrbitingObject = ({ radius, speed, color, size = 0.2 }: OrbitingObjectProps) => {
-  const meshRef = useRef<THREE.Mesh>(null!)
+const OrbitalVisualization = () => {
+  const [orbitPhase, setOrbitPhase] = useState(0)
   
-  useFrame((state) => {
-    if (meshRef.current) {
-      const time = state.clock.elapsedTime * speed
-      meshRef.current.position.x = Math.cos(time) * radius
-      meshRef.current.position.z = Math.sin(time) * radius
-    }
-  })
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOrbitPhase((prev) => (prev + 1) % 360)
+    }, 100)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
-    <mesh ref={meshRef}>
-      <sphereGeometry args={[size, 8, 8]} />
-      <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.2} />
-    </mesh>
-  )
-}
-
-const SpaceStation = () => {
-  const stationRef = useRef<THREE.Group>(null!)
-  
-  useFrame(() => {
-    if (stationRef.current) {
-      stationRef.current.rotation.y += 0.01
-    }
-  })
-
-  return (
-    <group ref={stationRef}>
-      <mesh>
-        <cylinderGeometry args={[0.3, 0.3, 1, 8]} />
-        <meshStandardMaterial color="#C0C0C0" metalness={0.8} roughness={0.2} />
-      </mesh>
-      <mesh position={[0, 0, 0.7]}>
-        <boxGeometry args={[0.2, 0.2, 0.4]} />
-        <meshStandardMaterial color="#4169E1" />
-      </mesh>
-      <mesh position={[0, 0, -0.7]}>
-        <boxGeometry args={[0.2, 0.2, 0.4]} />
-        <meshStandardMaterial color="#DC143C" />
-      </mesh>
-    </group>
-  )
-}
-
-const OrbitalScene = () => {
-  return (
-    <>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[0, 0, 0]} intensity={2} color="#FFA500" />
+    <div className="relative h-full w-full rounded-lg overflow-hidden group">
+      <img
+        src="https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=1200&h=600&fit=crop"
+        alt="Orbital Space View"
+        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-background/20 to-background/60" />
       
-      {/* Central Star */}
-      <mesh position={[0, 0, 0]}>
-        <sphereGeometry args={[0.5, 16, 16]} />
-        <meshStandardMaterial color="#FFA500" emissive="#FFA500" emissiveIntensity={0.5} />
-      </mesh>
+      {/* Animated orbital elements */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="relative w-48 h-48">
+          {/* Central object */}
+          <div className="absolute top-1/2 left-1/2 w-6 h-6 bg-yellow-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg shadow-yellow-400/50" />
+          
+          {/* Orbiting object */}
+          <motion.div
+            className="absolute top-1/2 left-1/2 w-3 h-3 bg-blue-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg shadow-blue-400/50"
+            animate={{
+              x: Math.cos(orbitPhase * Math.PI / 180) * 80,
+              y: Math.sin(orbitPhase * Math.PI / 180) * 80,
+            }}
+            transition={{ duration: 0.1, ease: "linear" }}
+          />
+          
+          {/* Orbit path */}
+          <div className="absolute top-1/2 left-1/2 w-40 h-40 border border-primary/30 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
+        </div>
+      </div>
       
-      {/* Simple Orbiting Objects */}
-      <mesh position={[2, 0, 0]}>
-        <sphereGeometry args={[0.15, 8, 8]} />
-        <meshStandardMaterial color="#60A5FA" emissive="#60A5FA" emissiveIntensity={0.2} />
-      </mesh>
-      
-      <OrbitControls enablePan={false} maxDistance={12} minDistance={6} />
-    </>
+      <div className="absolute bottom-4 left-4 right-4">
+        <div className="text-white font-semibold">Orbital Trajectory Simulation</div>
+        <div className="text-white/70 text-sm">Phase: {orbitPhase}°</div>
+      </div>
+    </div>
   )
 }
 
@@ -144,13 +113,9 @@ export const OrbitalDemo = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* 3D Orbital Visualization */}
+      {/* Orbital Visualization */}
       <GlassCard className="p-6 h-96">
-        <div className="h-full w-full rounded-lg overflow-hidden bg-background">
-          <Canvas camera={{ position: [8, 8, 8], fov: 60 }}>
-            <OrbitalScene />
-          </Canvas>
-        </div>
+        <OrbitalVisualization />
       </GlassCard>
 
       {/* Launch Control Panel */}

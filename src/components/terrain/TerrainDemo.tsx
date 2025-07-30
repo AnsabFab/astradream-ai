@@ -1,56 +1,57 @@
-import { useRef, useEffect, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Text, Sphere } from '@react-three/drei'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import * as THREE from 'three'
 import { useOpenRouter } from '@/hooks/useOpenRouter'
 import { GlassCard } from '@/components/ui/glass-card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Scan, Brain, MapPin, AlertTriangle } from 'lucide-react'
 
-interface TerrainMeshProps {
-  position: [number, number, number]
-  color: string
-  scale?: number
-}
-
-const TerrainMesh = ({ position, color, scale = 1 }: TerrainMeshProps) => {
-  const meshRef = useRef<THREE.Mesh>(null!)
+const TerrainVisualization = () => {
+  const [currentView, setCurrentView] = useState(0)
   
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += 0.005
-      meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime) * 0.1
-    }
-  })
+  const terrainViews = [
+    'https://images.unsplash.com/photo-1469474968028-56623f02e426?w=1200&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1200&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=1200&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&h=600&fit=crop'
+  ]
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentView((prev) => (prev + 1) % terrainViews.length)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
-    <mesh ref={meshRef} position={position} scale={[scale, scale, scale]}>
-      <sphereGeometry args={[0.5, 16, 16]} />
-      <meshStandardMaterial color={color} roughness={0.7} metalness={0.3} />
-    </mesh>
-  )
-}
-
-const TerrainScene = () => {
-  return (
-    <>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} intensity={1} />
-      
-      {/* Simple Terrain Elements */}
-      <mesh position={[-2, 0, 0]}>
-        <sphereGeometry args={[0.5, 16, 16]} />
-        <meshStandardMaterial color="#8B4513" roughness={0.7} metalness={0.3} />
-      </mesh>
-      <mesh position={[2, 0, 0]}>
-        <sphereGeometry args={[0.3, 16, 16]} />
-        <meshStandardMaterial color="#228B22" roughness={0.7} metalness={0.3} />
-      </mesh>
-      
-      <OrbitControls enablePan={false} maxDistance={10} minDistance={3} />
-    </>
+    <div className="relative h-full w-full rounded-lg overflow-hidden group">
+      <motion.img
+        key={currentView}
+        src={terrainViews[currentView]}
+        alt="Terrain Analysis View"
+        className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
+        initial={{ opacity: 0, scale: 1.1 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        transition={{ duration: 1 }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+      <div className="absolute bottom-4 left-4 right-4">
+        <div className="flex justify-between items-center">
+          <div className="text-white font-semibold">Terrain Sector {currentView + 1}</div>
+          <div className="flex gap-1">
+            {terrainViews.map((_, index) => (
+              <div
+                key={index}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  index === currentView ? 'bg-primary' : 'bg-white/50'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -106,13 +107,9 @@ export const TerrainDemo = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* 3D Terrain Visualization */}
+      {/* Terrain Visualization */}
       <GlassCard className="p-6 h-96">
-        <div className="h-full w-full rounded-lg overflow-hidden bg-background">
-          <Canvas camera={{ position: [5, 5, 5], fov: 60 }}>
-            <TerrainScene />
-          </Canvas>
-        </div>
+        <TerrainVisualization />
       </GlassCard>
 
       {/* Analysis Panel */}

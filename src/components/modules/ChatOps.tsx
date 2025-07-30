@@ -4,7 +4,7 @@ import { GlassCard } from "@/components/ui/glass-card"
 import { CosmicButton } from "@/components/ui/cosmic-button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { useOpenRouter, AVAILABLE_MODELS } from "@/hooks/useOpenRouter"
+import { useAIChat } from "@/hooks/useAIChat"
 import { MessageCircle, Send, Bot, User, Settings } from "lucide-react"
 
 interface Message {
@@ -26,9 +26,8 @@ export function ChatOps() {
     }
   ])
   const [input, setInput] = useState("")
-  const [selectedModel, setSelectedModel] = useState<string>(AVAILABLE_MODELS[0].id)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const { generateSpaceAnalysis, isLoading, lastUsage } = useOpenRouter()
+  const { generateResponse, isLoading, lastTokens } = useAIChat()
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -52,14 +51,15 @@ export function ChatOps() {
     setInput("")
 
     try {
-      const response = await generateSpaceAnalysis(input, "", selectedModel)
+      const missionContext = `Current mission status: Orbital Survey phase. Systems: Power 87%, Communications 95%, Temperature 78°C, Fuel 65%, Shields 92%. Active mission: Mars reconnaissance with rover deployment in progress.`
+      const response = await generateResponse(input, missionContext)
       
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
         content: response,
         timestamp: new Date(),
-        model: AVAILABLE_MODELS.find(m => m.id === selectedModel)?.name || selectedModel
+        model: 'ASTRA-X GPT-4.1'
       }
 
       setMessages(prev => [...prev, assistantMessage])
@@ -103,22 +103,14 @@ export function ChatOps() {
         </div>
         
         <div className="flex items-center space-x-2">
-          {lastUsage && (
+          {lastTokens && (
             <Badge variant="outline" className="text-xs">
-              {lastUsage.tokens} tokens
+              {lastTokens} tokens
             </Badge>
           )}
-          <select
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
-            className="text-xs bg-background-secondary border border-glass-border rounded px-2 py-1"
-          >
-            {AVAILABLE_MODELS.map(model => (
-              <option key={model.id} value={model.id}>
-                {model.name}
-              </option>
-            ))}
-          </select>
+          <Badge variant="outline" className="text-xs border-primary/30 text-primary">
+            GPT-4.1 Active
+          </Badge>
         </div>
       </div>
 

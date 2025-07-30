@@ -65,45 +65,20 @@ const SpaceStation = () => {
 const OrbitalScene = () => {
   return (
     <>
-      <ambientLight intensity={0.2} />
+      <ambientLight intensity={0.3} />
       <pointLight position={[0, 0, 0]} intensity={2} color="#FFA500" />
-      <pointLight position={[5, 5, 5]} intensity={0.5} color="#4169E1" />
       
       {/* Central Star */}
-      <Sphere position={[0, 0, 0]} args={[0.5]}>
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[0.5, 16, 16]} />
         <meshStandardMaterial color="#FFA500" emissive="#FFA500" emissiveIntensity={0.5} />
-      </Sphere>
+      </mesh>
       
-      {/* Orbital Rings */}
-      <Ring args={[2, 2.05, 32]} rotation={[Math.PI / 2, 0, 0]}>
-        <meshBasicMaterial color="#60A5FA" transparent={true} opacity={0.3} />
-      </Ring>
-      <Ring args={[3, 3.05, 32]} rotation={[Math.PI / 2, 0, 0]}>
-        <meshBasicMaterial color="#10B981" transparent={true} opacity={0.3} />
-      </Ring>
-      <Ring args={[4, 4.05, 32]} rotation={[Math.PI / 2, 0, 0]}>
-        <meshBasicMaterial color="#F59E0B" transparent={true} opacity={0.3} />
-      </Ring>
-      
-      {/* Orbiting Objects */}
-      <OrbitingObject radius={2} speed={1} color="#60A5FA" size={0.15} />
-      <OrbitingObject radius={3} speed={0.7} color="#10B981" size={0.2} />
-      <OrbitingObject radius={4} speed={0.5} color="#F59E0B" size={0.25} />
-      
-      {/* Space Station */}
-      <group position={[2.5, 0, 0]}>
-        <SpaceStation />
-      </group>
-      
-      <Text
-        position={[0, 5, 0]}
-        fontSize={0.4}
-        color="#60A5FA"
-        anchorX="center"
-        anchorY="middle"
-      >
-        Orbital Launch Trajectory
-      </Text>
+      {/* Simple Orbiting Objects */}
+      <mesh position={[2, 0, 0]}>
+        <sphereGeometry args={[0.15, 8, 8]} />
+        <meshStandardMaterial color="#60A5FA" emissive="#60A5FA" emissiveIntensity={0.2} />
+      </mesh>
       
       <OrbitControls enablePan={false} maxDistance={12} minDistance={6} />
     </>

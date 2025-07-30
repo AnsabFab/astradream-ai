@@ -36,36 +36,18 @@ const TerrainMesh = ({ position, color, scale = 1 }: TerrainMeshProps) => {
 const TerrainScene = () => {
   return (
     <>
-      <ambientLight intensity={0.3} />
+      <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1} />
-      <pointLight position={[-10, -10, -10]} color="#4338ca" intensity={0.5} />
       
-      {/* Terrain Elements */}
-      <TerrainMesh position={[-2, 0, 0]} color="#8B4513" scale={1.2} />
-      <TerrainMesh position={[2, 0, 0]} color="#228B22" scale={0.8} />
-      <TerrainMesh position={[0, 2, 0]} color="#DC143C" scale={0.6} />
-      <TerrainMesh position={[0, -2, 0]} color="#4169E1" scale={1.0} />
-      
-      {/* Analysis Points */}
-      <Sphere position={[-1, 1, 1]} args={[0.1]}>
-        <meshStandardMaterial color="#FFD700" />
-      </Sphere>
-      <Sphere position={[1, -1, 1]} args={[0.1]}>
-        <meshStandardMaterial color="#FF4500" />
-      </Sphere>
-      <Sphere position={[0, 0, 2]} args={[0.1]}>
-        <meshStandardMaterial color="#00CED1" />
-      </Sphere>
-      
-      <Text
-        position={[0, 3, 0]}
-        fontSize={0.5}
-        color="#60A5FA"
-        anchorX="center"
-        anchorY="middle"
-      >
-        ASTRA-X Terrain Analysis
-      </Text>
+      {/* Simple Terrain Elements */}
+      <mesh position={[-2, 0, 0]}>
+        <sphereGeometry args={[0.5, 16, 16]} />
+        <meshStandardMaterial color="#8B4513" roughness={0.7} metalness={0.3} />
+      </mesh>
+      <mesh position={[2, 0, 0]}>
+        <sphereGeometry args={[0.3, 16, 16]} />
+        <meshStandardMaterial color="#228B22" roughness={0.7} metalness={0.3} />
+      </mesh>
       
       <OrbitControls enablePan={false} maxDistance={10} minDistance={3} />
     </>

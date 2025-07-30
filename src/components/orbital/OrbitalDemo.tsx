@@ -76,13 +76,13 @@ const OrbitalScene = () => {
       
       {/* Orbital Rings */}
       <Ring args={[2, 2.05, 32]} rotation={[Math.PI / 2, 0, 0]}>
-        <meshBasicMaterial color="#60A5FA" transparent opacity={0.3} />
+        <meshBasicMaterial color="#60A5FA" transparent={true} opacity={0.3} />
       </Ring>
       <Ring args={[3, 3.05, 32]} rotation={[Math.PI / 2, 0, 0]}>
-        <meshBasicMaterial color="#10B981" transparent opacity={0.3} />
+        <meshBasicMaterial color="#10B981" transparent={true} opacity={0.3} />
       </Ring>
       <Ring args={[4, 4.05, 32]} rotation={[Math.PI / 2, 0, 0]}>
-        <meshBasicMaterial color="#F59E0B" transparent opacity={0.3} />
+        <meshBasicMaterial color="#F59E0B" transparent={true} opacity={0.3} />
       </Ring>
       
       {/* Orbiting Objects */}

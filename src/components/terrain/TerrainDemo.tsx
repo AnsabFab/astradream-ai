@@ -47,9 +47,15 @@ const TerrainScene = () => {
       <TerrainMesh position={[0, -2, 0]} color="#4169E1" scale={1.0} />
       
       {/* Analysis Points */}
-      <Sphere position={[-1, 1, 1]} args={[0.1]} material-color="#FFD700" />
-      <Sphere position={[1, -1, 1]} args={[0.1]} material-color="#FF4500" />
-      <Sphere position={[0, 0, 2]} args={[0.1]} material-color="#00CED1" />
+      <Sphere position={[-1, 1, 1]} args={[0.1]}>
+        <meshStandardMaterial color="#FFD700" />
+      </Sphere>
+      <Sphere position={[1, -1, 1]} args={[0.1]}>
+        <meshStandardMaterial color="#FF4500" />
+      </Sphere>
+      <Sphere position={[0, 0, 2]} args={[0.1]}>
+        <meshStandardMaterial color="#00CED1" />
+      </Sphere>
       
       <Text
         position={[0, 3, 0]}

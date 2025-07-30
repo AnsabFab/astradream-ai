@@ -35,10 +35,10 @@ export const Dashboard = () => {
   }
 
   const stats = [
-    { icon: Rocket, label: 'Active Missions', value: '12', change: '+2' },
-    { icon: Globe, label: 'Planets Scanned', value: '847', change: '+23' },
-    { icon: Satellite, label: 'Satellites Online', value: '156', change: '+5' },
-    { icon: Brain, label: 'AI Models', value: '8', change: '+1' }
+    { icon: Rocket, label: 'Active Missions', value: '15', change: '+3' },
+    { icon: Globe, label: 'Planets Scanned', value: '1,247', change: '+89' },
+    { icon: Satellite, label: 'Satellites Online', value: '203', change: '+12' },
+    { icon: Brain, label: 'AI Models', value: '12', change: '+2' }
   ]
 
   return (

@@ -126,11 +126,10 @@ export const TerrainDemo = () => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* 3D Terrain Visualization */}
       <GlassCard className="p-6 h-96">
-        <div className="h-full w-full rounded-lg overflow-hidden bg-background flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-6xl mb-4">🌍</div>
-            <p className="text-muted-foreground">Terrain Analysis Active</p>
-          </div>
+        <div className="h-full w-full rounded-lg overflow-hidden bg-background">
+          <Canvas camera={{ position: [5, 5, 5], fov: 60 }}>
+            <TerrainScene />
+          </Canvas>
         </div>
       </GlassCard>
 

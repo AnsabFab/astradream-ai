@@ -19,36 +19,29 @@ const OrbitalVisualization = () => {
   }, [])
 
   return (
-    <div className="relative h-full w-full rounded-lg overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-black">
-      {/* Stars background */}
-      <div className="absolute inset-0">
-        {[...Array(50)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full opacity-60"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`
-            }}
-          />
-        ))}
-      </div>
+    <div className="relative h-full w-full rounded-lg overflow-hidden">
+      {/* Space background */}
+      <img
+        src="/lovable-uploads/3e75f04b-4b99-4d8f-9d94-85e0f7dd0de1.png"
+        alt="Hohmann Transfer Visualization"
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black/20" />
       
-      {/* Central planetary body (Earth-like) */}
+      {/* Orbital simulation overlay */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="relative w-64 h-64">
-          {/* Earth */}
-          <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-gradient-to-br from-blue-400 to-green-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg shadow-blue-400/50">
+          {/* Central Earth */}
+          <div className="absolute top-1/2 left-1/2 w-12 h-12 bg-gradient-to-br from-blue-400 to-green-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg shadow-blue-400/50">
             <div className="absolute inset-1 bg-gradient-to-br from-blue-300 to-blue-500 rounded-full opacity-80" />
           </div>
           
-          {/* Target planet (Mars-like) */}
+          {/* Target Moon */}
           <motion.div
-            className="absolute top-1/2 left-1/2 w-8 h-8 bg-gradient-to-br from-red-400 to-orange-500 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg shadow-red-400/50"
+            className="absolute top-1/2 left-1/2 w-6 h-6 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg shadow-gray-400/50"
             animate={{
-              x: Math.cos(orbitPhase * Math.PI / 180) * 120,
-              y: Math.sin(orbitPhase * Math.PI / 180) * 120,
+              x: Math.cos(orbitPhase * Math.PI / 180) * 100,
+              y: Math.sin(orbitPhase * Math.PI / 180) * 100,
             }}
             transition={{ duration: 0.1, ease: "linear" }}
           />
@@ -57,26 +50,26 @@ const OrbitalVisualization = () => {
           <motion.div
             className="absolute top-1/2 left-1/2 w-2 h-2 bg-yellow-300 rounded-sm transform -translate-x-1/2 -translate-y-1/2 shadow-lg shadow-yellow-300/70"
             animate={{
-              x: Math.cos((orbitPhase + transferProgress * 3.6) * Math.PI / 180) * (80 + transferProgress * 0.4),
-              y: Math.sin((orbitPhase + transferProgress * 3.6) * Math.PI / 180) * (80 + transferProgress * 0.4),
+              x: Math.cos((orbitPhase + transferProgress * 3.6) * Math.PI / 180) * (60 + transferProgress * 0.4),
+              y: Math.sin((orbitPhase + transferProgress * 3.6) * Math.PI / 180) * (60 + transferProgress * 0.4),
             }}
             transition={{ duration: 0.1, ease: "linear" }}
           />
           
-          {/* Inner orbit (Earth) */}
-          <div className="absolute top-1/2 left-1/2 w-32 h-32 border border-blue-300/30 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
+          {/* Earth orbit */}
+          <div className="absolute top-1/2 left-1/2 w-24 h-24 border border-blue-300/40 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
           
-          {/* Outer orbit (Mars) */}
-          <div className="absolute top-1/2 left-1/2 w-48 h-48 border border-red-300/30 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
+          {/* Moon orbit */}
+          <div className="absolute top-1/2 left-1/2 w-52 h-52 border border-gray-300/40 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
           
           {/* Transfer ellipse */}
-          <div className="absolute top-1/2 left-1/2 w-40 h-32 border border-yellow-300/40 border-dashed rounded-full transform -translate-x-1/2 -translate-y-1/2 rotate-12" />
+          <div className="absolute top-1/2 left-1/2 w-40 h-28 border border-yellow-300/50 border-dashed rounded-full transform -translate-x-1/2 -translate-y-1/2 rotate-12" />
         </div>
       </div>
       
       <div className="absolute bottom-4 left-4 right-4">
-        <div className="text-white font-semibold">Hohmann Transfer Trajectory</div>
-        <div className="text-white/70 text-sm">Transfer Progress: {transferProgress}%</div>
+        <div className="text-white font-semibold drop-shadow-lg">Hohmann Transfer Trajectory</div>
+        <div className="text-white/80 text-sm drop-shadow-lg">Transfer Progress: {transferProgress}%</div>
       </div>
     </div>
   )

@@ -10,10 +10,9 @@ const TerrainVisualization = () => {
   const [currentView, setCurrentView] = useState(0)
   
   const terrainViews = [
-    'https://images.unsplash.com/photo-1469474968028-56623f02e426?w=1200&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1200&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=1200&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&h=600&fit=crop'
+    '/lovable-uploads/1755cb5a-09e8-4f36-b7be-3d0cdf6989a6.png',
+    '/lovable-uploads/11ddff10-bf79-4166-898a-d88f58e9b974.png',
+    '/lovable-uploads/128d50da-164f-404c-8b80-d3043c167a2c.png'
   ]
 
   useEffect(() => {

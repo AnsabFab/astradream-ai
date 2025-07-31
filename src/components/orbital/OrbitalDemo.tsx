@@ -8,47 +8,75 @@ import { Rocket, Orbit, Fuel, Gauge } from 'lucide-react'
 
 const OrbitalVisualization = () => {
   const [orbitPhase, setOrbitPhase] = useState(0)
+  const [transferProgress, setTransferProgress] = useState(0)
   
   useEffect(() => {
     const interval = setInterval(() => {
-      setOrbitPhase((prev) => (prev + 1) % 360)
+      setOrbitPhase((prev) => (prev + 2) % 360)
+      setTransferProgress((prev) => (prev + 1) % 100)
     }, 100)
     return () => clearInterval(interval)
   }, [])
 
   return (
-    <div className="relative h-full w-full rounded-lg overflow-hidden group">
-      <img
-        src="https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=1200&h=600&fit=crop"
-        alt="Orbital Space View"
-        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-      />
-      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-background/20 to-background/60" />
+    <div className="relative h-full w-full rounded-lg overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-black">
+      {/* Stars background */}
+      <div className="absolute inset-0">
+        {[...Array(50)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-white rounded-full opacity-60"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`
+            }}
+          />
+        ))}
+      </div>
       
-      {/* Animated orbital elements */}
+      {/* Central planetary body (Earth-like) */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative w-48 h-48">
-          {/* Central object */}
-          <div className="absolute top-1/2 left-1/2 w-6 h-6 bg-yellow-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg shadow-yellow-400/50" />
+        <div className="relative w-64 h-64">
+          {/* Earth */}
+          <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-gradient-to-br from-blue-400 to-green-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg shadow-blue-400/50">
+            <div className="absolute inset-1 bg-gradient-to-br from-blue-300 to-blue-500 rounded-full opacity-80" />
+          </div>
           
-          {/* Orbiting object */}
+          {/* Target planet (Mars-like) */}
           <motion.div
-            className="absolute top-1/2 left-1/2 w-3 h-3 bg-blue-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg shadow-blue-400/50"
+            className="absolute top-1/2 left-1/2 w-8 h-8 bg-gradient-to-br from-red-400 to-orange-500 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg shadow-red-400/50"
             animate={{
-              x: Math.cos(orbitPhase * Math.PI / 180) * 80,
-              y: Math.sin(orbitPhase * Math.PI / 180) * 80,
+              x: Math.cos(orbitPhase * Math.PI / 180) * 120,
+              y: Math.sin(orbitPhase * Math.PI / 180) * 120,
             }}
             transition={{ duration: 0.1, ease: "linear" }}
           />
           
-          {/* Orbit path */}
-          <div className="absolute top-1/2 left-1/2 w-40 h-40 border border-primary/30 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
+          {/* Spacecraft */}
+          <motion.div
+            className="absolute top-1/2 left-1/2 w-2 h-2 bg-yellow-300 rounded-sm transform -translate-x-1/2 -translate-y-1/2 shadow-lg shadow-yellow-300/70"
+            animate={{
+              x: Math.cos((orbitPhase + transferProgress * 3.6) * Math.PI / 180) * (80 + transferProgress * 0.4),
+              y: Math.sin((orbitPhase + transferProgress * 3.6) * Math.PI / 180) * (80 + transferProgress * 0.4),
+            }}
+            transition={{ duration: 0.1, ease: "linear" }}
+          />
+          
+          {/* Inner orbit (Earth) */}
+          <div className="absolute top-1/2 left-1/2 w-32 h-32 border border-blue-300/30 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
+          
+          {/* Outer orbit (Mars) */}
+          <div className="absolute top-1/2 left-1/2 w-48 h-48 border border-red-300/30 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
+          
+          {/* Transfer ellipse */}
+          <div className="absolute top-1/2 left-1/2 w-40 h-32 border border-yellow-300/40 border-dashed rounded-full transform -translate-x-1/2 -translate-y-1/2 rotate-12" />
         </div>
       </div>
       
       <div className="absolute bottom-4 left-4 right-4">
-        <div className="text-white font-semibold">Orbital Trajectory Simulation</div>
-        <div className="text-white/70 text-sm">Phase: {orbitPhase}°</div>
+        <div className="text-white font-semibold">Hohmann Transfer Trajectory</div>
+        <div className="text-white/70 text-sm">Transfer Progress: {transferProgress}%</div>
       </div>
     </div>
   )
